@@ -1,5 +1,6 @@
 
 #include "light.h"
+#include "shape.h"
 #include "camera.h"
       
 Light::Light(const Vector & cente, unsigned char* colo) : center(cente){

@@ -96,7 +96,7 @@ If we inspect the input file `inputs/elephant.ray` we see that it loads the mesh
 data/x.txt 1586 data/f.txt 3168 -1.58 -.43 2.7
 ```
 
-The goal here is to speed up the program sufficiently to make a high resolution circle of the elephant mesh (found in `data/elepx.txt` and `data/elepf.txt`), which contains 111748 triangles. One can edit the `.ray` file and comment out the sphere mesh and replace it with `data/elepx.txt 62779 data/elepf.txt 111748 -1.58 -.43 2.7`.
+The goal here is to speed up the program sufficiently to make a high resolution circle of the elephant mesh (found in `data/elepx.txt` and `data/elepf.txt`), which contains 111748 triangles. One can edit the `.ray` file and comment out the sphere mesh and replace it with `data/elepx.txt 62779 data/elepf.txt 111748 -1.58 -.43 2.7` (this is done in `inputs/realelephant.ray`).
 
 ## Code Overview
 
@@ -113,5 +113,22 @@ Each object in our scene is defined as a shape. There are several shapes subclas
 Shapes have a position in space, and potentially an orientation (i.e. direction they face, as defined with the angles yaw pitch and roll).
 
 Shapes also have a texture defining what color of each point of the shape, and optionally a "normalMap" texture which defines how light bounces off each point.
+
+Core methods within shape include:
+* `getIntersection`, which defines whether a given light ray will hit the shape, and if so returns time it takes the light to hit it (otherwise infinity).
+* `getLightIntersection`: Given that a ray hits the shape, determine how a light source will illuminate the shape at that point based off of the color of the object, and its spectral properties (i.e. opaque, reflective, aminent lighting).
+* `getNormal` determine the normal axis to the point of collision, in order to compute the direction in which light will bounce off the object.
+
+### Texture
+
+A texture object defines what color will be applied at a point in space. There are two textures implemented: a single color for all points, and one loaded from an image. Textures are used to define both the color of an object, and also can optionally be used to define normal axes for an object (using data stored in rgb to define the xyz axis).
+
+### Light
+
+Light objects illuminate a scene, resulting in differences in gradients of colors on an object and shadows. Lights have a color and a position.
+
+### Autonoma
+
+An Autonoma is a base class used to hold all of the shapes in scope, the camera, and all lights.
 
 
