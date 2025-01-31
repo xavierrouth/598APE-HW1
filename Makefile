@@ -15,5 +15,5 @@ all:
 
 clean:
 	cd ./src && make clean
-	rm ./*.exe
-	rm ./*.obj
+	rm -f ./*.exe
+	rm -f ./*.obj

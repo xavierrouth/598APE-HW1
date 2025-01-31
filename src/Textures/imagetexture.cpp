@@ -246,11 +246,20 @@ void ImageTexture::readPPM(FILE* f, const char* file){
          for(x = 0; x<w; x++){
             int total = 4*(x+y*w);
             unsigned int tmp;
-            fscanf(f, "%u", &tmp);
+            if (fscanf(f, "%u", &tmp) == EOF) {
+               printf("Could not read byte\n");
+               exit(1);
+            }
             imageData[total] = (unsigned char)tmp;
-            fscanf(f, "%u", &tmp);
+            if (fscanf(f, "%u", &tmp) == EOF) {
+               printf("Could not read byte\n");
+               exit(1);
+            }
             imageData[total+1] = (unsigned char)tmp;
-            fscanf(f, "%u", &tmp);
+            if (fscanf(f, "%u", &tmp) == EOF) {
+               printf("Could not read byte\n");
+               exit(1);
+            }
             imageData[total+2] = (unsigned char)tmp;
             imageData[total+3] = 255;
          }

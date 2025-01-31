@@ -109,7 +109,7 @@ unsigned char Plane::reversible(){
    return 1; }
 
 Vector Plane::getNormal(Vector point){
-   if(normalMap=='\0')
+   if(normalMap==NULL)
       return vect;
    else{
       Vector dist = solveScalers(right, up, vect, point-center);

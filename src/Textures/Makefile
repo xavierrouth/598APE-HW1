@@ -28,4 +28,4 @@ $(OBJ_DIR)functiontexture.obj: functiontexture.cpp functiontexture.h $(OBJ_DIR)t
 	$(FUNC) $(output)$(OBJ_DIR)functiontexture.obj $(copt) functiontexture.cpp $(FLAGS)
 
 clean:
-	rm $(OBJ_DIR)*.obj
+	rm -f $(OBJ_DIR)*.obj

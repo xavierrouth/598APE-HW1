@@ -60,4 +60,4 @@ $(OBJ_DIR)disk.obj: $(SRC_DIR)disk.cpp $(SRC_DIR)disk.h $(OBJ_DIR)/plane.obj
 
 clean:
 	cd Textures && make clean
-	rm $(OBJ_DIR)*.obj
+	rm -f $(OBJ_DIR)*.obj

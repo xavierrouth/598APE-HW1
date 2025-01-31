@@ -1,0 +1,1 @@
+docker run -it -v `pwd`:/host wsmoses/598ape /bin/bash

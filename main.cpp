@@ -11,6 +11,7 @@
 #include "src/Textures/colortexture.h"
 #include<stdio.h>
 #include<stdlib.h>
+#include <string.h>
 #include <iostream>
 using namespace std;
 
@@ -168,7 +169,10 @@ Vector* getVectors(FILE* f, int len){
    Vector* vec = (Vector*)malloc(len*sizeof(Vector));
    float x, y, z;
    for(int i = 0; i<len; i++){
-      fscanf(f, "%f %f %f\n", &x, &y, &z);
+      if (fscanf(f, "%f %f %f\n", &x, &y, &z) == EOF) {
+         printf("Failed to read vectors\n");
+         exit(1);
+      }
       vec[i].x = x;
       vec[i].y = y;
       vec[i].z = z;
@@ -179,7 +183,10 @@ unsigned int* getTriangles(FILE* f, int len){
    unsigned int* vec = (unsigned int*)malloc(3*len*sizeof(unsigned int));
    int a, b, d;
    for(int i = 0; i<3*len; i+=3){
-      fscanf(f, "%d %d %d\n", &vec[i], &vec[i+1], &vec[i+2]); 
+      if (fscanf(f, "%d %d %d\n", &vec[i], &vec[i+1], &vec[i+2]) == EOF) {
+         printf("Failed to read triangles\n");
+         exit(1);
+      }
    }
    return vec;
 }
@@ -555,7 +562,7 @@ int main(int argc, const char** argv){
       } else {
          snprintf(command, sizeof(command), "ffmpeg -y -r 24 -i %s.tmp.%%07d.ppm -vcodec ffv1 %s.tmp.avi && ffmpeg -y -i %s.tmp.avi -c:v libx264 -preset veryslow -qp 0 -r 24 %s", outFile, outFile, outFile, outFile);         
       }
-      system(command);
+      return system(command);
    }   
    return 0;
    
