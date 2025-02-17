@@ -1,7 +1,7 @@
 FUNC := g++
 copt := -c 
 OBJ_DIR := ./bin/
-FLAGS := -O3 -lm -g -Werror -flto=12 -fuse-linker-plugin -ftree-vectorize -fopt-info-vec-optimized
+FLAGS := -O3 -lm -g -Werror -ffast-math -flto=12 -fuse-linker-plugin -ftree-vectorize -fopt-info-vec-optimized
 
 CPP_FILES := $(wildcard src/*.cpp)
 OBJ_FILES := $(addprefix $(OBJ_DIR),$(notdir $(CPP_FILES:.cpp=.obj)))
