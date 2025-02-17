@@ -4,6 +4,8 @@
 #include "camera.h"
 #include "Textures/texture.h"
 #include "Textures/colortexture.h"
+#include <vector>
+#include <memory>
 
 typedef struct {
    unsigned char r;
@@ -25,24 +27,18 @@ struct LightNode{
 };
 
 class Shape;
-struct ShapeNode{
-   Shape* data;
-   ShapeNode* prev, *next;
-};
 
 class Autonoma{
 public:
    Camera camera;
    Texture* skybox;
    unsigned int depth;
-   ShapeNode *listStart, *listEnd;
+   std::vector<std::unique_ptr<Shape>> shapes;
    LightNode *lightStart, *lightEnd;
    Autonoma(const Camera &c);
    Autonoma(const Camera &c, Texture* tex);
-   void addShape(Shape* s);
-   void removeShape(ShapeNode* s);
+   void addShape(std::unique_ptr<Shape> s);
    void addLight(Light* s);
-   void removeLight(LightNode* s);
 };
 
 void getLight(double* toFill, const Autonoma* const aut, Vector point, Vector norm, unsigned char r);

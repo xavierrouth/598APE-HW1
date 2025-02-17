@@ -263,9 +263,9 @@ Autonoma* createInputs(const char* inputFile) {
                exit(1);
             }
             Texture *texture = parseTexture(f, false);
-            Plane *shape = new Plane(Vector(plane_x, plane_y, plane_z), texture, yaw, pitch, roll, tx, ty);
-            MAIN_DATA->addShape(shape);
-            shape->normalMap = parseTexture(f, true);
+            Plane shape = Plane(Vector(plane_x, plane_y, plane_z), texture, yaw, pitch, roll, tx, ty);
+            shape.normalMap = parseTexture(f, true);
+            MAIN_DATA->addShape(std::make_unique<Plane>(shape));
          } else if (streq(object_type, "disk")) {
             double disk_x, disk_y, disk_z;
             double yaw, pitch, roll;
@@ -275,9 +275,9 @@ Autonoma* createInputs(const char* inputFile) {
                exit(1);
             }
             Texture *texture = parseTexture(f, false);
-            Disk* shape = new Disk(Vector(disk_x, disk_y, disk_z), texture, yaw, pitch, roll, tx, ty);
-            MAIN_DATA->addShape(shape);
-            shape->normalMap = parseTexture(f, true);
+            Disk shape = Disk(Vector(disk_x, disk_y, disk_z), texture, yaw, pitch, roll, tx, ty);
+            shape.normalMap = parseTexture(f, true);
+            MAIN_DATA->addShape(std::make_unique<Disk>(shape));
          } else if (streq(object_type, "box")) {
             double box_x, box_y, box_z;
             double yaw, pitch, roll;
@@ -287,9 +287,10 @@ Autonoma* createInputs(const char* inputFile) {
                exit(1);
             }
             Texture *texture = parseTexture(f, false);
-            Box* shape = new Box(Vector(box_x, box_y, box_z), texture, yaw, pitch, roll, tx, ty);
-            MAIN_DATA->addShape(shape);
-            shape->normalMap = parseTexture(f, true);
+            Box shape = Box(Vector(box_x, box_y, box_z), texture, yaw, pitch, roll, tx, ty);
+            shape.normalMap = parseTexture(f, true);
+            MAIN_DATA->addShape(std::make_unique<Box>(shape));
+            
          } else if (streq(object_type, "triangle")) {
             double x1, y1, z1;
             double x2, y2, z2;
@@ -299,9 +300,10 @@ Autonoma* createInputs(const char* inputFile) {
                exit(1);
             }
             Texture *texture = parseTexture(f, false);
-            Triangle* shape = new Triangle(Vector(x1, y1, z1), Vector(x2, y2, z2), Vector(x3, y3, z3), texture);
-            MAIN_DATA->addShape(shape);
-            shape->normalMap = parseTexture(f, true);
+            Triangle shape = Triangle(Vector(x1, y1, z1), Vector(x2, y2, z2), Vector(x3, y3, z3), texture);
+            shape.normalMap = parseTexture(f, true);
+            MAIN_DATA->addShape(std::make_unique<Triangle>(shape));
+            
          } else if (streq(object_type, "sphere")) {
             double sphere_x, sphere_y, sphere_z;
             double yaw, pitch, roll;
@@ -311,9 +313,10 @@ Autonoma* createInputs(const char* inputFile) {
                exit(1);
             }
             Texture *texture = parseTexture(f, false);
-            Sphere* shape = new Sphere(Vector(sphere_x, sphere_y, sphere_z), texture, yaw, pitch, roll, radius);
-            MAIN_DATA->addShape(shape);
-            shape->normalMap = parseTexture(f, true);
+            Sphere shape = Sphere(Vector(sphere_x, sphere_y, sphere_z), texture, yaw, pitch, roll, radius);
+            shape.normalMap = parseTexture(f, true);
+            MAIN_DATA->addShape(std::make_unique<Sphere>(shape));
+            
          } else if (streq(object_type, "mesh")) {
              char point_filepath[100];
              char poly_filepath[100];
@@ -344,9 +347,10 @@ Autonoma* createInputs(const char* inputFile) {
             fclose(triangles);
             Vector offset(off_x, off_y, off_z); 
             for(int i = 0; i<num_polygons; i++){
-               Triangle* shape = new Triangle(points[polys[3*i]] + offset, points[polys[3*i+1]] + offset, points[polys[3*i+2]] + offset, texture);
-               MAIN_DATA->addShape(shape);
-               shape->normalMap = normalMap;
+               Triangle shape = Triangle(points[polys[3*i]] + offset, points[polys[3*i+1]] + offset, points[polys[3*i+2]] + offset, texture);
+               shape.normalMap = normalMap;
+               MAIN_DATA->addShape(std::make_unique<Triangle>(shape));
+               
             }
          } else {
            printf("Unknown object type %s\n", object_type);
@@ -414,17 +418,9 @@ void setFrame(const char* animateFile, Autonoma* MAIN_DATA, int frame, int frame
                exit(1);
             }
          } else if (streq(object_type, "object")) {
-            ShapeNode* node = MAIN_DATA->listStart;
-            for (int i=0; i<obj_num; i++) {
-               if (node == MAIN_DATA->listEnd) {
-                  printf("Could not find object number %d\n", obj_num);
-                  exit(1);
-               }
-               if (i == obj_num)
-                  break;
-               node = node->next;
-            }
-            Shape* shape = node->data;
+            
+
+            Shape* shape = MAIN_DATA->shapes[obj_num].get();
 
             if (streq(field_type, "yaw")) {
                shape->setYaw(result);

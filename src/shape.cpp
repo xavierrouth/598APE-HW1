@@ -58,19 +58,18 @@ struct less_than_key
 };
 
 void calcColor(unsigned char* __restrict__ toFill,const Autonoma* const __restrict__  c, Ray ray, unsigned int depth){
-   ShapeNode* t = c->listStart;
    
    double curTime = inf;
    Shape* curShape = nullptr;
 
-   while(t!=NULL){
-      double time = t->data->getIntersection(ray);
-      TimeAndShape a = {time, t->data};
+   for (auto & shape : c->shapes) {
+      double time = shape->getIntersection(ray);
+      TimeAndShape a = {time, shape.get()};
       if (time < curTime) {
-         curShape = t->data;
+         curShape = shape.get();
          curTime = time;
       }
-      t = t->next;
+      
    }
 
    if (curShape == nullptr || curTime == inf) {
