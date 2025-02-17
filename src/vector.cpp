@@ -82,10 +82,21 @@ Vector Vector::normalize(){
 
   
 Vector solveScalers(const Vector v1, const Vector v2, const Vector v3, const Vector C){
-   const double denom = v1.z*v2.y*v3.x-v1.y*v2.z*v3.x-v1.z*v2.x*v3.y+v1.x*v2.z*v3.y+v1.y*v2.x*v3.z-v1.x*v2.y*v3.z;
-   const double a = C.z*v2.y*v3.x-C.y*v2.z*v3.x-C.z*v2.x*v3.y+C.x*v2.z*v3.y+C.y*v2.x*v3.z-C.x*v2.y*v3.z;
-   const double b = -C.z*v1.y*v3.x+C.y*v1.z*v3.x+C.z*v1.x*v3.y-C.x*v1.z*v3.y-C.y*v1.x*v3.z+C.x*v1.y*v3.z;
-   const double c = C.z*v1.y*v2.x-C.y*v1.z*v2.x-C.z*v1.x*v2.y+C.x*v1.z*v2.y+C.y*v1.x*v2.z-C.x*v1.y*v2.z;
+   // double v1x_v2y = v1.x * v2.y;
+   // double v1x_v2z = v1.x * v2.z;
+   // double v1y_v2x = v1.y * v2.x; 
+   // double v1y_v2z = v1.y * v2.z;
+   // double v1z_v2x = v1.z * v2.x;
+   // double v1z_v2y = v1.z * v2.y;
+   // double c = C.z * v1y_v2x - C.y * v1z_v2x - C.z * v1x_v2y + C.x * v1z_v2y + C.y * v1x_v2z - C.x * v1y_v2z;
+
+   double denom = v1.z*v2.y*v3.x-v1.y*v2.z*v3.x-v1.z*v2.x*v3.y+v1.x*v2.z*v3.y+v1.y*v2.x*v3.z-v1.x*v2.y*v3.z;
+   double a = C.z*v2.y*v3.x-C.y*v2.z*v3.x-C.z*v2.x*v3.y+C.x*v2.z*v3.y+C.y*v2.x*v3.z-C.x*v2.y*v3.z;
+   double b = -C.z*v1.y*v3.x+C.y*v1.z*v3.x+C.z*v1.x*v3.y-C.x*v1.z*v3.y-C.y*v1.x*v3.z+C.x*v1.y*v3.z;
+   double c = C.z*v1.y*v2.x-C.y*v1.z*v2.x-C.z*v1.x*v2.y+C.x*v1.z*v2.y+C.y*v1.x*v2.z-C.x*v1.y*v2.z;
+
+   // double denom = v1z_v2y * v3.x - v1y_v2z * v3.x -v1z_v2x * v3.y + v1x_v2z * v3.y + v1y_v2x * v3.z - v1x_v2y * v3.z;
+
    double inv_denom = 1.0 / denom;
    return Vector(a * inv_denom, b * inv_denom, c * inv_denom);
 }
