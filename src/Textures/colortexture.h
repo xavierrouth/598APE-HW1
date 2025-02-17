@@ -25,7 +25,7 @@
 #define BISQUE new ColorTexture(255,228,196)
 #define BLANCHEDALMOND new ColorTexture(255,235,205)
 #define BLUEVIOLET new ColorTexture(138,43,226)
-class ColorTexture: public Texture{
+class ColorTexture final: public Texture{
 public:
   unsigned char r, g, b;
   ColorTexture(unsigned char aa, unsigned char bb, unsigned char cc);
@@ -33,7 +33,7 @@ public:
   ColorTexture(unsigned char aa, unsigned char bb, unsigned char cc, double alp, double ref);
   ColorTexture(unsigned char aa, unsigned char bb, unsigned char cc, double alp, double ref, double amb);
   ColorTexture(char* def);
-  void getColor(unsigned char* /*__restrict__*/ toFill, double* /*__restrict__*/ amb, double * /*__restrict__*/ op, double * /*__restrict__*/ ref, double x, double y);
+  void getColor(unsigned char* __restrict__ toFill, double* __restrict__ amb, double * __restrict__ op, double * __restrict__ ref, double x, double y) final;
 };
 
 #endif

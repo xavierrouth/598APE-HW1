@@ -59,11 +59,9 @@ struct less_than_key
 
 void calcColor(unsigned char* __restrict__ toFill,Autonoma* __restrict__  c, Ray ray, unsigned int depth){
    ShapeNode* t = c->listStart;
-
-   // std::vector<TimeAndShape> times_vec;
+   
    double curTime = inf;
    Shape* curShape = nullptr;
-
 
    while(t!=NULL){
       double time = t->data->getIntersection(ray);

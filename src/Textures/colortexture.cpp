@@ -15,7 +15,7 @@ ColorTexture::ColorTexture(unsigned char ra, unsigned char ga, unsigned char ba,
 ColorTexture::ColorTexture(char* def):Texture(.3,1.,0.){
 
 }
-void ColorTexture::getColor(unsigned char* /*__restrict__*/ toFill, double* /*__restrict__*/ amb, double * /*__restrict__*/ op, double * /*__restrict__*/ ref, double x, double y){
+void ColorTexture::getColor(unsigned char* __restrict__ toFill, double* __restrict__ amb, double * __restrict__ op, double * __restrict__ ref, double x, double y){
    toFill[0] = r; toFill[1] = g; toFill[2] = b;
    *op = opacity;
    *ref = reflection;

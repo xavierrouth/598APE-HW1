@@ -13,7 +13,7 @@ public:
 /** from 0 to 1 **/
    double opacity, reflection, ambient;
    Texture(double am, double op, double ref);
-   virtual void getColor(unsigned char */*__restrict__*/ toFill, double* /*__restrict__*/ am, double */*__restrict__*/ opacity, double */*__restrict__*/ reflection,double x, double y) = 0;
+   virtual void getColor(unsigned char *__restrict__ toFill, double* __restrict__ am, double *__restrict__ opacity, double *__restrict__ reflection,double x, double y) = 0;
    Texture* clone();
 };
 
