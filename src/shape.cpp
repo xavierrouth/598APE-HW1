@@ -57,29 +57,25 @@ struct less_than_key
     }
 };
 
-void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
+void calcColor(unsigned char* __restrict__ toFill,Autonoma* __restrict__  c, Ray ray, unsigned int depth){
    ShapeNode* t = c->listStart;
-   // TimeAndShape *times = (TimeAndShape*)malloc(0);
 
-   std::vector<TimeAndShape> times_vec;
+   // std::vector<TimeAndShape> times_vec;
+   double curTime = inf;
+   Shape* curShape = nullptr;
+
 
    while(t!=NULL){
       double time = t->data->getIntersection(ray);
       TimeAndShape a = {time, t->data};
-      times_vec.push_back(a);
-      // TimeAndShape *times2 = (TimeAndShape*)malloc(sizeof(TimeAndShape)*(seen + 1));
-      // for (int i=0; i<seen; i++)
-      //    times2[i] = times[i];
-      // times2[seen] = (TimeAndShape){ time, t->data };
-      // free(times);
-      // times = times2;
-      // seen ++;
+      if (time < curTime) {
+         curShape = t->data;
+         curTime = time;
+      }
       t = t->next;
    }
-   std::sort(times_vec.begin(), times_vec.end(), less_than_key());
-   // insertionSort(times, seen);
-   size_t seen = times_vec.size();
-   if (seen == 0 || times_vec[0].time == inf) {
+
+   if (curShape == nullptr || curTime == inf) {
       double opacity, reflection, ambient;
       Vector temp = ray.vector.normalize();
       const double x = temp.x;
@@ -89,10 +85,6 @@ void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
       c->skybox->getColor(toFill, &ambient, &opacity, &reflection, fix(angle/M_TWO_PI),fix(me));
       return;
    }
-
-   double curTime = times_vec[0].time;
-   Shape* curShape = times_vec[0].shape;
-   // free(times);
 
    Vector intersect = curTime*ray.vector+ray.point;
    double opacity, reflection, ambient;
