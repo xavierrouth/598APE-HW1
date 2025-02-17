@@ -1,7 +1,7 @@
 FUNC := g++
 copt := -c 
 output :=-o 
-FLAGS := -O3 -g -Werror
+FLAGS := -O3 -g -Werror -ffast-math -flto=12 -fuse-linker-plugin -ftree-vectorize -fopt-info-vec-optimized
 OBJ_DIR :=./
 
 CPP_FILES := $(wildcard *.cpp)
