@@ -101,7 +101,7 @@ bool Plane::getLightIntersection(Ray ray, double* fill){
 void Plane::move(){
    d = -vect.dot(center);
 }
-void Plane::getColor(unsigned char* __restrict__ toFill,double* __restrict__ am, double* __restrict__ op, double* __restrict__ ref, Autonoma* __restrict__ r, Ray ray, unsigned int depth){
+void Plane::getColor(unsigned char* /*__restrict__*/ toFill,double* /*__restrict__*/ am, double* /*__restrict__*/ op, double* /*__restrict__*/ ref, Autonoma* /*__restrict__*/ r, Ray ray, unsigned int depth){
    Vector dist = solveScalers(right, up, vect, ray.point-center);
    texture->getColor(toFill, am, op, ref, fix(dist.x/textureX-.5), fix(dist.y/textureY-.5));
 }

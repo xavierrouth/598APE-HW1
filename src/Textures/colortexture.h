@@ -33,7 +33,7 @@ public:
   ColorTexture(unsigned char aa, unsigned char bb, unsigned char cc, double alp, double ref);
   ColorTexture(unsigned char aa, unsigned char bb, unsigned char cc, double alp, double ref, double amb);
   ColorTexture(char* def);
-  void getColor(unsigned char* __restrict__ toFill, double* __restrict__ amb, double * __restrict__ op, double * __restrict__ ref, double x, double y);
+  void getColor(unsigned char* /*__restrict__*/ toFill, double* /*__restrict__*/ amb, double * /*__restrict__*/ op, double * /*__restrict__*/ ref, double x, double y);
 };
 
 #endif

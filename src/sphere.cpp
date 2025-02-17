@@ -47,7 +47,7 @@ void Sphere::move(){
 }
 unsigned char Sphere::reversible(){return 0;}
 
-void Sphere::getColor(unsigned char* __restrict__ toFill, double* __restrict__ amb, double*__restrict__  op, double* __restrict__ ref, Autonoma* __restrict__ r, Ray ray, unsigned int depth){
+void Sphere::getColor(unsigned char* /*__restrict__*/ toFill, double* /*__restrict__*/ amb, double*/*__restrict__*/  op, double* /*__restrict__*/ ref, Autonoma* /*__restrict__*/ r, Ray ray, unsigned int depth){
    double data3 = (center.y-ray.point.y+radius)/(2*radius);
    double data2 = atan2( ray.point.z-center.z, ray.point.x-center.x);
    texture->getColor(toFill, amb, op, ref,fix((yaw+data2)/M_TWO_PI/textureX),fix((pitch/M_TWO_PI-(data3))/textureY));
