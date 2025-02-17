@@ -14,7 +14,7 @@ class Shape{
    virtual bool getLightIntersection(Ray ray, double* fill) = 0;
    virtual void move() = 0;
    virtual unsigned char reversible() = 0;
-   virtual void getColor(unsigned char* toFill, double* am, double* op, double* ref, Autonoma* r, Ray ray, unsigned int depth) = 0;
+   virtual void getColor(unsigned char* __restrict__ toFill, double* __restrict__ am, double* __restrict__ op, double* __restrict__ ref, Autonoma* __restrict__ r, Ray ray, unsigned int depth) = 0;
    virtual Vector getNormal(Vector point) = 0;
    virtual void setAngles(double yaw, double pitch, double roll) = 0;
    virtual void setYaw(double d) = 0;
