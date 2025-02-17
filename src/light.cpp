@@ -3,16 +3,13 @@
 #include "shape.h"
 #include "camera.h"
       
-Light::Light(const Vector & cente, unsigned char* colo) : center(cente){
+Light::Light(const Vector & cente, color_t colo) : center(cente){
    color = colo;
 }
 
-unsigned char* Light::getColor(unsigned char a, unsigned char b, unsigned char c){
-   unsigned char* r = (unsigned char*)malloc(sizeof(unsigned char)*3);
-   r[0] = a;
-   r[1] = b;
-   r[2] = c;
-   return r;
+color_t Light::getColor(unsigned char a, unsigned char b, unsigned char c){
+   color_t color {a, b, c};
+   return color;
 }
 
 Autonoma::Autonoma(const Camera& c): camera(c){
@@ -110,9 +107,9 @@ void getLight(double* tColor, Autonoma* aut, Vector point, Vector norm, unsigned
    LightNode *t = aut->lightStart;
    while(t!=NULL){
       double lightColor[3];     
-      lightColor[0] = t->data->color[0]/255.;
-      lightColor[1] = t->data->color[1]/255.;
-      lightColor[2] = t->data->color[2]/255.;
+      lightColor[0] = t->data->color.r/255.;
+      lightColor[1] = t->data->color.g/255.;
+      lightColor[2] = t->data->color.b/255.;
       Vector ra = t->data->center-point;
       ShapeNode* shapeIter = aut->listStart;
       bool hit = false;

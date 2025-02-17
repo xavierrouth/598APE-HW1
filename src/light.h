@@ -5,12 +5,18 @@
 #include "Textures/texture.h"
 #include "Textures/colortexture.h"
 
+typedef struct {
+   unsigned char r;
+   unsigned char g;
+   unsigned char b;
+} color_t;
+
 class Light{
   public:
-   unsigned char* color;
-   unsigned char* getColor(unsigned char a, unsigned char b, unsigned char c);
+   color_t color;
+   color_t getColor(unsigned char a, unsigned char b, unsigned char c);
    Vector center;
-   Light(const Vector & cente, unsigned char* colo);
+   Light(const Vector & cente, color_t colo);
 };
 
 struct LightNode{
