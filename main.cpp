@@ -13,6 +13,8 @@
 #include<stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <future>
+#include <vector>
 using namespace std;
 
 #include <sys/time.h>
@@ -44,14 +46,44 @@ void set(int i, int j, unsigned char r, unsigned char g, unsigned char b){
    DATA[3*(i+j*W)+1] = g; 
    DATA[3*(i+j*W)+2] = b; 
 }
+int TILE_SIZE = 5000;
 
-void refresh(Autonoma* c){
+void refresh(const Autonoma* const c){
    for(int n = 0; n<H*W; ++n) 
    { 
-      Vector ra = c->camera.forward+((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up));
+      Vector ra = ((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up)) + c->camera.forward;
       calcColor(&DATA[3*n], c, Ray(c->camera.focus, ra), 0);
    }
 }
+
+
+// void refresh_tile(const Autonoma* const c, int tile_num){    
+//    for(int n_outer = 0; n_outer < TILE_SIZE; ++n_outer) 
+//    { 
+//       int n = n_outer + (tile_num * TILE_SIZE);
+//       //std::cout << "n: " << n << std::endl;
+//       Vector ra = ((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up))+c->camera.forward;
+//       calcColor(&DATA[3*n], c, Ray(c->camera.focus, ra), 0);
+//    }
+// }
+
+// void refresh(const Autonoma* const c){
+//    int N = H*W;
+//    int num_tiles = N / TILE_SIZE;
+//    //std::cout << "num_tiles: " << num_tiles << std::endl;
+//    std::vector<std::future<void>> futures(num_tiles);
+
+//    for(int tile_num = 0; tile_num<num_tiles; ++tile_num) 
+//    { 
+//       //std::cout << "tile: " << tile_num << std::endl;;
+//       // refresh_tile(c, tile_num);
+//       futures[tile_num] = std::async(std::launch::async, refresh_tile, c, tile_num);
+//    }
+
+//    for (auto& th : futures) {
+//       th.get();
+//   }
+// }
 
 void outputPPM(FILE* f){
    fprintf(f, "P6 %d %d 255 ", W, H);
@@ -349,7 +381,7 @@ double cosfn(double x, double from, double to) {
    return (to - from) * cos(x * 6.28) + from;
 }
 
-void setFrame(const char* animateFile, Autonoma* MAIN_DATA, int frame, int frameLen) {
+void setFrame(const char* animateFile,  Autonoma*  MAIN_DATA, int frame, int frameLen) {
    if (animateFile) {
       char object_type[80];
       char transition_type[80];
