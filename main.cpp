@@ -48,42 +48,33 @@ void set(int i, int j, unsigned char r, unsigned char g, unsigned char b){
 }
 int TILE_SIZE = 5000;
 
-void refresh(const Autonoma* const c){
-   for(int n = 0; n<H*W; ++n) 
+void refresh_tile(const Autonoma* const c, int tile_num){    
+   for(int n_outer = 0; n_outer < TILE_SIZE; ++n_outer) 
    { 
-      Vector ra = ((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up)) + c->camera.forward;
+      int n = n_outer + (tile_num * TILE_SIZE);
+      //std::cout << "n: " << n << std::endl;
+      Vector ra = ((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up))+c->camera.forward;
       calcColor(&DATA[3*n], c, Ray(c->camera.focus, ra), 0);
    }
 }
 
+void refresh(const Autonoma* const c){
+   int N = H*W;
+   int num_tiles = N / TILE_SIZE;
+   //std::cout << "num_tiles: " << num_tiles << std::endl;
+   std::vector<std::future<void>> futures(num_tiles);
 
-// void refresh_tile(const Autonoma* const c, int tile_num){    
-//    for(int n_outer = 0; n_outer < TILE_SIZE; ++n_outer) 
-//    { 
-//       int n = n_outer + (tile_num * TILE_SIZE);
-//       //std::cout << "n: " << n << std::endl;
-//       Vector ra = ((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up))+c->camera.forward;
-//       calcColor(&DATA[3*n], c, Ray(c->camera.focus, ra), 0);
-//    }
-// }
+   for(int tile_num = 0; tile_num<num_tiles; ++tile_num) 
+   { 
+      //std::cout << "tile: " << tile_num << std::endl;;
+      // refresh_tile(c, tile_num);
+      futures[tile_num] = std::async(std::launch::async, refresh_tile, c, tile_num);
+   }
 
-// void refresh(const Autonoma* const c){
-//    int N = H*W;
-//    int num_tiles = N / TILE_SIZE;
-//    //std::cout << "num_tiles: " << num_tiles << std::endl;
-//    std::vector<std::future<void>> futures(num_tiles);
-
-//    for(int tile_num = 0; tile_num<num_tiles; ++tile_num) 
-//    { 
-//       //std::cout << "tile: " << tile_num << std::endl;;
-//       // refresh_tile(c, tile_num);
-//       futures[tile_num] = std::async(std::launch::async, refresh_tile, c, tile_num);
-//    }
-
-//    for (auto& th : futures) {
-//       th.get();
-//   }
-// }
+   for (auto& th : futures) {
+      th.get();
+  }
+}
 
 void outputPPM(FILE* f){
    fprintf(f, "P6 %d %d 255 ", W, H);
