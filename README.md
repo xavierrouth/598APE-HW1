@@ -1,3 +1,6 @@
+# Note to reviewer:
+Optimizations are stored as commits on the `opts` branch. All work and experiments were done in the provided dockerfile. No changes should be needed to compile & run the programs.
+
 # 598APE-HW1
 
 This repository contains code for homework 1 of 598APE.
